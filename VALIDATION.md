@@ -2,14 +2,21 @@
 
 ## Local
 
-`python -m unittest -v`: 6 tests PASS, bao gồm tiến trình mới đọc lại JWT rồi session cookie sau cập nhật. Kiểm tra thêm lịch sử, chỉ inject quy ước hiện hành, ghi lặp không đổi dữ liệu, file hỏng không bị ghi đè và bảo toàn dữ liệu khi atomic replace thất bại.
+`python -m unittest -v`: 6 tests PASS, gồm tiến trình mới đọc lại JWT rồi session cookie sau cập nhật; kiểm tra lịch sử, chỉ inject giá trị hiện hành, lưu lặp, file hỏng và lỗi atomic replace.
 
 `python -m pip check`: PASS.
 
-## API thật — chưa hoàn tất
+## API thật — PASS
 
-Đã thử gọi Mistral với model `ministral-3b-2512` và khóa do người dùng cung cấp. Kết nối bị egress proxy chặn: CONNECT tunnel trả `403 Forbidden` trước khi tới API. Không có bằng chứng khóa sai hoặc model không tồn tại; chưa có câu trả lời từ model và chưa pass demo end-to-end.
+Đã gọi endpoint `https://api.mistral.ai/v1` với model `codestral-2508`. Kiểm tra native tool calling thành công (`ping`). Demo `python demo.py` chạy 4 tiến trình Python độc lập, không chia sẻ lịch sử hội thoại:
 
-Đã lưu draft bổ sung `api.mistral.ai`, hướng dẫn cài/chạy và biến cấu hình không bí mật. Cần review/save trong Environment settings và publish môi trường; thao tác lưu draft không tự áp dụng quyền mạng. Sau khi mạng được áp dụng, nhập khóa an toàn vào môi trường của terminal và chạy `python demo.py` theo README. Không lưu khóa trong cấu hình mã nguồn hoặc gói nộp bài.
+1. Session 1: model gọi `remember_convention` thành công, lưu `authentication = JWT`.
+2. Session 2: memory inject là JWT; model trả lời `JWT` — chứng minh nhớ qua session mới.
+3. Session 3: model gọi tool cập nhật `authentication = session cookie` thành công.
+4. Session 4: memory inject là session cookie; model trả lời `session cookie`, không JWT — chứng minh cập nhật cho session sau.
 
-File `artifacts/demo_result.json` chỉ xuất hiện khi demo thật pass toàn bộ kiểm tra. Không dùng kết quả local để thay thế bằng chứng model qua API.
+Kiểm tra file cuối cùng có giá trị hiện hành session cookie và lịch sử JWT đã bị thay thế. Toàn bộ assertion của demo PASS.
+
+Bằng chứng gốc: [artifacts/demo_result.json](artifacts/demo_result.json), chứa câu hỏi, câu trả lời, memory inject, kết quả tool và memory cuối. Timestamp ghi memory: 2026-10-22 UTC. Không chứa khóa API.
+
+Để tái hiện, cung cấp khóa bằng biến môi trường an toàn, đặt `OPENAI_BASE_URL=https://api.mistral.ai/v1`, `MODEL_NAME=codestral-2508` và chạy theo README. Lần thử trước với ministral bị proxy chặn; kết quả PASS ở đây thuộc lần chạy mới với codestral, không xác nhận model ministral.

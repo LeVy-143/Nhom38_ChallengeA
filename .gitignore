@@ -2,4 +2,5 @@
 __pycache__/
 .env
 project_memory.json
-artifacts/
+artifacts/*
+!artifacts/demo_result.json

@@ -1,0 +1,71 @@
+{
+  "model": "codestral-2508",
+  "sessions": [
+    {
+      "prompt": "Ghi nhớ quy ước dự án: authentication dùng JWT. Hãy lưu bằng tool với key authentication, value JWT.",
+      "injected_memory": {},
+      "answer": "Đã lưu quy ước dự án: authentication dùng JWT.",
+      "tools": [
+        {
+          "tool": "remember_convention",
+          "result": {
+            "ok": true,
+            "key": "authentication",
+            "value": "JWT",
+            "updated": false
+          }
+        }
+      ]
+    },
+    {
+      "prompt": "Theo quy ước hiện tại, khi triển khai authentication cho dự án tôi phải dùng gì? Chỉ trả lời tên cơ chế.",
+      "injected_memory": {
+        "authentication": "JWT"
+      },
+      "answer": "JWT",
+      "tools": []
+    },
+    {
+      "prompt": "Đổi quy ước authentication: bỏ JWT, chuyển sang session cookie. Cập nhật bằng tool với key authentication, value session cookie.",
+      "injected_memory": {
+        "authentication": "JWT"
+      },
+      "answer": "Đã cập nhật quy ước authentication thành session cookie.",
+      "tools": [
+        {
+          "tool": "remember_convention",
+          "result": {
+            "ok": true,
+            "key": "authentication",
+            "value": "session cookie",
+            "updated": true
+          }
+        }
+      ]
+    },
+    {
+      "prompt": "Theo quy ước hiện tại, khi triển khai authentication cho dự án tôi phải dùng gì? Chỉ trả lời tên cơ chế.",
+      "injected_memory": {
+        "authentication": "session cookie"
+      },
+      "answer": "session cookie",
+      "tools": []
+    }
+  ],
+  "final_memory": {
+    "authentication": {
+      "value": "session cookie",
+      "updated_at": "2026-10-22T15:09:06.911817+00:00",
+      "source": "user",
+      "history": [
+        {
+          "value": "JWT",
+          "updated_at": "2026-10-22T15:09:03.812933+00:00",
+          "superseded_at": "2026-10-22T15:09:06.911817+00:00",
+          "source": "user"
+        }
+      ]
+    }
+  },
+  "checks": "PASS"
+}

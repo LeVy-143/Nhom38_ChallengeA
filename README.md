@@ -11,7 +11,7 @@ python -m venv .venv
 read -rsp 'Mistral API key: ' OPENAI_API_KEY; echo
 export OPENAI_API_KEY
 export OPENAI_BASE_URL=https://api.mistral.ai/v1
-export MODEL_NAME=ministral-3b-2512
+export MODEL_NAME=codestral-2508
 .venv/bin/python main.py --show-memory
 ```
 
